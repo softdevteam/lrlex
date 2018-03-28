@@ -32,11 +32,18 @@
 
 use std::cell::RefCell;
 use std::collections::{HashMap, HashSet};
-use std::convert::TryFrom;
 use std::rc::Rc;
 use std::slice::Iter;
 
 use regex::Regex;
+
+fn usize_u32_try_from(value: usize) -> Result<u32, ()> {
+    if value > u32::max_value() as usize {
+        Err(())
+    } else {
+        Ok(value as u32)
+    }
+}
 
 pub struct Rule<TokId> {
     /// If `Some`, the ID that tokens created against this rule will be given (lrlex gives such
@@ -252,7 +259,7 @@ impl<TokId: Copy> Lexeme<TokId> {
     pub fn new(tok_id: TokId, start: usize, len: usize) -> Lexeme<TokId> {
         Lexeme{
             start: start,
-            len: u32::try_from(len).unwrap(),
+            len: usize_u32_try_from(len).unwrap(),
             tok_id: tok_id
         }
     }
