@@ -34,7 +34,6 @@
 
 extern crate regex;
 
-use std::convert::TryFrom;
 use std::fmt;
 
 mod lexer;
